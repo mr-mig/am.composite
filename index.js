@@ -20,8 +20,8 @@ function createCompositeWithState(stateCreationFunction) {
   return function createElement(definition) {
 
     var deps = definition.ngDeps || [];
-    definition.postlink = definition.postlink || function () {
-    };
+    definition.postlink = definition.postlink || function () {};
+    definition.state = definition.state || {};
 
     if (!definition.name) {
       throw new Error('You tried to create the composite without name specified!');
@@ -66,6 +66,8 @@ function makeDirectiveFactory(definition, stateName) {
         }
         if (!scope.state) {
           scope.state = new CompositeState();
+          // force state to be updated for the upstream link
+          scope.$apply();
         }
         if (scope.channel) {
           Channels[scope.channel].listen(scope, scope.state);
