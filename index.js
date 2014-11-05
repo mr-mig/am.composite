@@ -59,6 +59,11 @@ function makeDirectiveFactory(definition, stateName) {
       template: definition.template,
       controller: definition.controller,
       link: function (scope, el, attrs) {
+        if (!attrs.state) {
+          console.log('Warning! It seems you forget to specify state attribute for ' +
+            definition.name +
+            ' element!');
+        }
         if (!scope.state) {
           scope.state = new CompositeState();
         }
